@@ -17,7 +17,8 @@ class InfoTable:
 
         #Create Columns
         self.tree['columns'] = ("Room Number", "Reservation Date", "First Name", "Last Name", "Checkin Date",
-                                "Checkout Date", "Number of Guests", "Special Requirements")
+                                "Checkout Date", "Number of Guests", "Special Requirements",
+                                "Email", "Phone Number", "Payment Method")
 
         self.tree.column("#0", width=0, stretch=tk.NO)
         self.tree.column("Room Number", anchor=tk.CENTER, width=60)
@@ -28,6 +29,9 @@ class InfoTable:
         self.tree.column("Checkout Date", anchor=tk.CENTER, width=120)
         self.tree.column("Number of Guests", anchor=tk.CENTER, width=60)
         self.tree.column("Special Requirements", anchor=tk.W, width=120)
+        self.tree.column("Email", anchor=tk.W, width=120)
+        self.tree.column("Phone Number", anchor=tk.W, width=120)
+        self.tree.column("Payment Method", anchor=tk.W, width=120)
 
         self.tree.heading("#0", text="", anchor=tk.CENTER)
         self.tree.heading("Room Number", text="Room", anchor=tk.CENTER)
@@ -38,6 +42,9 @@ class InfoTable:
         self.tree.heading("Checkout Date", text="Checkout", anchor=tk.CENTER)
         self.tree.heading("Number of Guests", text="Guests", anchor=tk.CENTER)
         self.tree.heading("Special Requirements", text="Notes", anchor=tk.CENTER)
+        self.tree.heading("Email", text="Notes", anchor=tk.CENTER)
+        self.tree.heading("Phone Number", text="Notes", anchor=tk.CENTER)
+        self.tree.heading("Payment Method", text="Notes", anchor=tk.CENTER)
 
         self.load_data_from_db()
 
@@ -75,7 +82,7 @@ class InfoTable:
         conn = sqlite3.connect('hotel_booking.db')
         c = conn.cursor()
         c.execute(
-            "SELECT room_number, reservation_date, first_name, last_name, checkin_date, checkout_date, number_of_guests, special_requirements FROM reservations")
+            "SELECT room_number, reservation_date, first_name, last_name, checkin_date, checkout_date, number_of_guests, special_requirements, email, phone_number, payment_method FROM reservations")
         rows = c.fetchall()
 
         # Repopulate the table view with the latest data.
