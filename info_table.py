@@ -62,7 +62,7 @@ class InfoTable:
 
             for row in rows:
                 print(f"Inserting row: {row}")
-                self.tree.insert("", tk.END, values=row)
+                self.tree.insert("", 0, values=row)  # O means Insert at the beginning
         except sqlite3.Error as e:
             print(f"Database error: {e}")
         except Exception as e:
@@ -87,7 +87,7 @@ class InfoTable:
 
         # Repopulate the table view with the latest data.
         for row in rows:
-            self.tree.insert("", tk.END, values=row)
+            self.tree.insert("", 0, values=row) 
 
 
 if __name__ == "__main__":
