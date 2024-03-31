@@ -1,29 +1,107 @@
 import tkinter as tk
+import sqlite3
+from info_table import InfoTable
 
 class ReservationBar:
-    def __init__(self, master):
+    def __init__(self, master, it=None):
+        self.it=it
         self.frame = tk.Frame(master)
         self.frame.pack(fill=tk.X, padx=10, pady=5)
 
-        check_in_label = tk.Label(self.frame, text="Room Number")
-        check_in_label.pack(side=tk.LEFT)
-        self.check_in_entry = tk.Entry(self.frame)
-        self.check_in_entry.pack(side=tk.LEFT, padx=5)
+        # First line frame
+        self.first_line_frame = tk.Frame(self.frame)
+        self.first_line_frame.pack(fill=tk.X)
 
-        check_out_label = tk.Label(self.frame, text="First Name")
-        check_out_label.pack(side=tk.LEFT)
-        self.check_out_entry = tk.Entry(self.frame)
-        self.check_out_entry.pack(side=tk.LEFT, padx=5)
+        # Second line frame
+        self.second_line_frame = tk.Frame(self.frame)
+        self.second_line_frame.pack(fill=tk.X)
 
-        check_out_label = tk.Label(self.frame, text="Last Name")
-        check_out_label.pack(side=tk.LEFT)
-        self.check_out_entry = tk.Entry(self.frame)
-        self.check_out_entry.pack(side=tk.LEFT, padx=5)
+        #Create Entry Widget
+        room_number_label = tk.Label(self.first_line_frame, text="Room Number")
+        room_number_label.pack(side=tk.LEFT)
+        self.room_number_entry = tk.Entry(self.first_line_frame)
+        self.room_number_entry.pack(side=tk.LEFT, padx=5)
 
-        check_out_label = tk.Label(self.frame, text="Date")
-        check_out_label.pack(side=tk.LEFT)
-        self.check_out_entry = tk.Entry(self.frame)
-        self.check_out_entry.pack(side=tk.LEFT, padx=5)
+        reservation_date_label = tk.Label(self.first_line_frame, text="Reservation Date")
+        reservation_date_label.pack(side=tk.LEFT)
+        self.reservation_date_entry = tk.Entry(self.first_line_frame)
+        self.reservation_date_entry.pack(side=tk.LEFT, padx=5)
 
-        search_button = tk.Button(self.frame, text="Add Booking")
-        search_button.pack(side=tk.RIGHT)
+        first_name_label = tk.Label(self.first_line_frame, text="First Name")
+        first_name_label.pack(side=tk.LEFT)
+        self.first_name_entry = tk.Entry(self.first_line_frame)
+        self.first_name_entry.pack(side=tk.LEFT, padx=5)
+
+        last_name_label = tk.Label(self.first_line_frame, text="Last Name")
+        last_name_label.pack(side=tk.LEFT)
+        self.last_name_entry = tk.Entry(self.first_line_frame)
+        self.last_name_entry.pack(side=tk.LEFT, padx=5)
+
+        checkin_date_label = tk.Label(self.second_line_frame, text="Checkin Date")
+        checkin_date_label.pack(side=tk.LEFT)
+        self.checkin_date_entry = tk.Entry(self.second_line_frame)
+        self.checkin_date_entry.pack(side=tk.LEFT, padx=5)
+
+        checkout_date_label = tk.Label(self.second_line_frame, text="Checkout Date")
+        checkout_date_label.pack(side=tk.LEFT)
+        self.checkout_date_entry = tk.Entry(self.second_line_frame)
+        self.checkout_date_entry.pack(side=tk.LEFT, padx=5)
+
+        number_of_guests_label = tk.Label(self.second_line_frame, text="Number of Guests")
+        number_of_guests_label.pack(side=tk.LEFT)
+        self.number_of_guests_entry = tk.Entry(self.second_line_frame)
+        self.number_of_guests_entry.pack(side=tk.LEFT, padx=5)
+
+        special_requirements_label = tk.Label(self.second_line_frame, text="Special Requirements")
+        special_requirements_label.pack(side=tk.LEFT)
+        self.special_requirements_entry = tk.Entry(self.second_line_frame)
+        self.special_requirements_entry.pack(side=tk.LEFT, padx=5)
+
+        # Booking Button is connected to the database
+        add_booking_button = tk.Button(self.second_line_frame, text="Add Booking", command=self.add_booking_to_database)
+        add_booking_button.pack(side=tk.RIGHT)
+
+    def add_booking_to_database(self):
+        # Collecting data from Entry widgets
+        room_number = self.room_number_entry.get()
+        reservation_date = self.reservation_date_entry.get()
+        first_name = self.first_name_entry.get()
+        last_name = self.last_name_entry.get()
+        checkin_date = self.checkin_date_entry.get()
+        checkout_date = self.checkout_date_entry.get()
+        number_of_guests = self.number_of_guests_entry.get()
+        special_requirements = self.special_requirements_entry.get()
+
+        # Connect to database
+        conn = sqlite3.connect('hotel_booking.db')
+        c = conn.cursor()
+
+        insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
+                        checkin_date, checkout_date, number_of_guests, special_requirements) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+
+        c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
+                               checkin_date, checkout_date, number_of_guests, special_requirements))
+
+        conn.commit()
+        conn.close()
+
+        # Assuming database operation is successful, now clear the fields and refresh the table
+        self.clear_entry_fields()
+
+        # Refresh the information in the table, ensure 'it' is an instance of InfoTable
+        if self.it:
+            self.it.refresh_table_view()
+
+
+    # Clear entry widget after click the button
+    def clear_entry_fields(self):
+        self.room_number_entry.delete(0, tk.END)
+        self.reservation_date_entry.delete(0, tk.END)
+        self.first_name_entry.delete(0, tk.END)
+        self.last_name_entry.delete(0, tk.END)
+        self.checkin_date_entry.delete(0, tk.END)
+        self.checkout_date_entry.delete(0, tk.END)
+        self.number_of_guests_entry.delete(0, tk.END)
+        self.special_requirements_entry.delete(0, tk.END)
+
