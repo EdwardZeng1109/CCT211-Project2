@@ -23,7 +23,7 @@ class ReservationBar:
         #Create Entry Widget
         room_number_label = tk.Label(self.first_line_frame, text="Room Number")
         room_number_label.pack(side=tk.LEFT)
-        self.room_number_entry = tk.Entry(self.first_line_frame)
+        self.room_number_entry = tk.Entry(self.first_line_frame,width=10)
         self.room_number_entry.pack(side=tk.LEFT, padx=5)
 
         reservation_date_label = tk.Label(self.first_line_frame, text="Reservation Date")
