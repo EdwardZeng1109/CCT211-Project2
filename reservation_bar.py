@@ -63,7 +63,7 @@ class ReservationBar:
 
         email_label = tk.Label(self.third_line_frame, text="Email")
         email_label.pack(side=tk.LEFT)
-        self.email_entry = tk.Entry(self.third_line_frame)
+        self.email_entry = tk.Entry(self.third_line_frame,width=30)
         self.email_entry.pack(side=tk.LEFT, padx=5)   
         
         phone_number_label = tk.Label(self.third_line_frame, text="Phone Number")
