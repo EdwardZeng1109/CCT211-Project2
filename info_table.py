@@ -30,8 +30,8 @@ class InfoTable:
         self.tree.column("Number of Guests", anchor=tk.CENTER, width=60)
         self.tree.column("Special Requirements", anchor=tk.W, width=120)
         self.tree.column("Email", anchor=tk.W, width=160)
-        self.tree.column("Phone Number", anchor=tk.W, width=120)
-        self.tree.column("Payment Method", anchor=tk.W, width=60)
+        self.tree.column("Phone Number", anchor=tk.CENTER, width=120)
+        self.tree.column("Payment Method", anchor=tk.CENTER, width=60)
 
         self.tree.heading("#0", text="", anchor=tk.CENTER)
         self.tree.heading("Room Number", text="Room", anchor=tk.CENTER)
