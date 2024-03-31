@@ -57,6 +57,21 @@ class ReservationBar:
         self.special_requirements_entry = tk.Entry(self.second_line_frame)
         self.special_requirements_entry.pack(side=tk.LEFT, padx=5)
 
+        email_label = tk.Label(self.third_line_frame, text="Email")
+        email_label.pack(side=tk.LEFT)
+        self.email_entry = tk.Entry(self.third_line_frame)
+        self.email_entry.pack(side=tk.LEFT, padx=5)   
+        
+        phone_number_label = tk.Label(self.third_line_frame, text="Phone Number")
+        phone_number_label.pack(side=tk.LEFT)
+        self.phone_number_entry = tk.Entry(self.third_line_frame)
+        self.phone_number_entry.pack(side=tk.LEFT, padx=5)   
+        
+        payment_method_label = tk.Label(self.third_line_frame, text="Payment Method")
+        payment_method_label.pack(side=tk.LEFT)
+        self.payment_method_entry = tk.Entry(self.third_line_frame)
+        self.payment_method_entry.pack(side=tk.LEFT, padx=5)           
+
         # Booking Button is connected to the database
         add_booking_button = tk.Button(self.second_line_frame, text="Add Booking", command=self.add_booking_to_database)
         add_booking_button.pack(side=tk.RIGHT)
@@ -71,17 +86,22 @@ class ReservationBar:
         checkout_date = self.checkout_date_entry.get()
         number_of_guests = self.number_of_guests_entry.get()
         special_requirements = self.special_requirements_entry.get()
+        email = self.email_entry.get()
+        phone_number = self.phone_number_entry.get()
+        payment_method = self.payment_method_entry.get()
 
         # Connect to database
         conn = sqlite3.connect('hotel_booking.db')
         c = conn.cursor()
 
         insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
-                        checkin_date, checkout_date, number_of_guests, special_requirements) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+                        checkin_date, checkout_date, number_of_guests, special_requirements, 
+                        email, phone_number, payment_method) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
         c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
-                               checkin_date, checkout_date, number_of_guests, special_requirements))
+                               checkin_date, checkout_date, number_of_guests, special_requirements, 
+                               email, phone_number, payment_method))
 
         conn.commit()
         conn.close()
@@ -104,4 +124,7 @@ class ReservationBar:
         self.checkout_date_entry.delete(0, tk.END)
         self.number_of_guests_entry.delete(0, tk.END)
         self.special_requirements_entry.delete(0, tk.END)
+        self.email_entry.delete(0, tk.END)
+        self.phone_number_entry.delete(0, tk.END)
+        self.payment_method_entry.delete(0, tk.END)
 
