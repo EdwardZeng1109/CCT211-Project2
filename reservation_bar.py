@@ -16,6 +16,10 @@ class ReservationBar:
         self.second_line_frame = tk.Frame(self.frame)
         self.second_line_frame.pack(fill=tk.X)
 
+        # Third line frame
+        self.third_line_frame = tk.Frame(self.frame)
+        self.third_line_frame.pack(fill=tk.X)
+
         #Create Entry Widget
         room_number_label = tk.Label(self.first_line_frame, text="Room Number")
         room_number_label.pack(side=tk.LEFT)
@@ -73,7 +77,7 @@ class ReservationBar:
         self.payment_method_entry.pack(side=tk.LEFT, padx=5)           
 
         # Booking Button is connected to the database
-        add_booking_button = tk.Button(self.second_line_frame, text="Add Booking", command=self.add_booking_to_database)
+        add_booking_button = tk.Button(self.third_line_frame, text="Add Booking", command=self.add_booking_to_database)
         add_booking_button.pack(side=tk.RIGHT)
 
     def add_booking_to_database(self):
