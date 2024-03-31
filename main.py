@@ -10,6 +10,7 @@ def main():
 
     reservation_bar = ReservationBar(root)
     information_table = InfoTable(root)
+    reservation_bar.it=information_table #transfer the information from bar to table --- code in reservation_bar
     room_preview = RoomBox(root)
 
     root.mainloop()
