@@ -7,124 +7,108 @@ class ReservationBar:
     def __init__(self, master, it=None):
         self.it = it
         self.frame = tk.Frame(master)
-        self.frame.grid(sticky="nsew")
+        self.frame.pack(fill=tk.X, padx=10, pady=5)
 
-        # Create Entry Widget for Room Number
-        room_number_label = tk.Label(self.frame, text="Room Number")
-        room_number_label.grid(row=0, column=0, sticky="w")
-        self.room_number_entry = tk.Entry(self.frame, width=10)
-        self.room_number_entry.grid(row=0, column=1, sticky="w")
+        # Use separate frames to organize the widgets in rows
+        self.first_line_frame = tk.Frame(self.frame)
+        self.first_line_frame.pack(fill=tk.X)
 
-        # Create Entry Widget for Reservation Date
-        self.reservation_date_label = tk.Label(self.frame, text="Reservation Date")
-        self.reservation_date_label.grid(row=0, column=2, sticky="w")
-        self.reservation_date_entry = DateEntry(self.frame)
-        self.reservation_date_entry.grid(row=0, column=3, sticky="w")
+        self.second_line_frame = tk.Frame(self.frame)
+        self.second_line_frame.pack(fill=tk.X)
 
-        # Create Entry Widgets for First and Last Name
-        first_name_label = tk.Label(self.frame, text="First Name")
-        first_name_label.grid(row=0, column=4, sticky="w")
-        self.first_name_entry = tk.Entry(self.frame)
-        self.first_name_entry.grid(row=0, column=5, sticky="w")
+        self.third_line_frame = tk.Frame(self.frame)
+        self.third_line_frame.pack(fill=tk.X)
 
-        last_name_label = tk.Label(self.frame, text="Last Name")
-        last_name_label.grid(row=0, column=6, sticky="w")
-        self.last_name_entry = tk.Entry(self.frame)
-        self.last_name_entry.grid(row=0, column=7, sticky="w")
+        # Create widgets in the first line
+        room_number_label = tk.Label(self.first_line_frame, text="Room Number")
+        room_number_label.pack(side=tk.LEFT)
+        self.room_number_entry = tk.Entry(self.first_line_frame, width=10)
+        self.room_number_entry.pack(side=tk.LEFT)
 
-        # Create Entry Widget for Check-in and Check-out Date
-        self.checkin_date_label = tk.Label(self.frame, text="Checkin Date")
-        self.checkin_date_label.grid(row=1, column=0, sticky="w")
-        self.checkin_date_entry = DateEntry(self.frame)
-        self.checkin_date_entry.grid(row=1, column=1, sticky="w")
+        self.reservation_date_label = tk.Label(self.first_line_frame, text="Reservation Date")
+        self.reservation_date_label.pack(side=tk.LEFT)
+        self.reservation_date_entry = DateEntry(self.first_line_frame)
+        self.reservation_date_entry.pack(side=tk.LEFT)
 
-        self.checkout_date_label = tk.Label(self.frame, text="Checkout Date")
-        self.checkout_date_label.grid(row=1, column=2, sticky="w")
-        self.checkout_date_entry = DateEntry(self.frame)
-        self.checkout_date_entry.grid(row=1, column=3, sticky="w")
+        # Create widgets in the second line
+        self.checkin_date_label = tk.Label(self.second_line_frame, text="Checkin Date")
+        self.checkin_date_label.pack(side=tk.LEFT)
+        self.checkin_date_entry = DateEntry(self.second_line_frame)
+        self.checkin_date_entry.pack(side=tk.LEFT)
 
-        # Create Entry Widget for Number of Guests
-        self.number_of_guests_label = tk.Label(self.frame, text="Number of Guests")
-        self.number_of_guests_label.grid(row=1, column=4, sticky="w")
-        self.number_of_guests_entry = ttk.Combobox(self.frame, values=list(range(1, 11)))
-        self.number_of_guests_entry.grid(row=1, column=5, sticky="w")
+        self.checkout_date_label = tk.Label(self.second_line_frame, text="Checkout Date")
+        self.checkout_date_label.pack(side=tk.LEFT)
+        self.checkout_date_entry = DateEntry(self.second_line_frame)
+        self.checkout_date_entry.pack(side=tk.LEFT)
 
-        # Create Entry Widget for Special Requirements
-        special_requirements_label = tk.Label(self.frame, text="Special Requirements")
-        special_requirements_label.grid(row=1, column=6, sticky="w")
-        self.special_requirements_entry = tk.Entry(self.frame, width=20)
-        self.special_requirements_entry.grid(row=1, column=7, sticky="w")
+        self.number_of_guests_label = tk.Label(self.second_line_frame, text="Number of Guests")
+        self.number_of_guests_label.pack(side=tk.LEFT)
+        self.number_of_guests_entry = ttk.Combobox(self.second_line_frame, values=list(range(1, 11)))
+        self.number_of_guests_entry.pack(side=tk.LEFT)
 
-        # Create Entry Widget for Email
-        email_label = tk.Label(self.frame, text="Email")
-        email_label.grid(row=2, column=0, sticky="w")
-        self.email_entry = tk.Entry(self.frame, width=30)
-        self.email_entry.grid(row=2, column=1, columnspan=3, sticky="w")
-
-        # Phone Number with validation
+        # Create widgets in the third line
+        self.phone_number_label = tk.Label(self.third_line_frame, text="Phone Number")
+        self.phone_number_label.pack(side=tk.LEFT)
         validate_phone_number = (master.register(self.only_numbers), '%P')
-        self.phone_number_label = tk.Label(self.frame, text="Phone Number")
-        self.phone_number_label.grid(row=2, column=4, sticky="w")
-        self.phone_number_entry = tk.Entry(self.frame, validate="key", validatecommand=validate_phone_number)
-        self.phone_number_entry.grid(row=2, column=5, sticky="w")
+        self.phone_number_entry = tk.Entry(self.third_line_frame, validate="key", validatecommand=validate_phone_number)
+        self.phone_number_entry.pack(side=tk.LEFT)
 
-        # Payment Method Combobox
-        self.payment_method_label = tk.Label(self.frame, text="Payment Method")
-        self.payment_method_label.grid(row=2, column=6, sticky="w")
-        self.payment_method_entry = ttk.Combobox(self.frame, values=["Credit", "Debit", "Cash"])
-        self.payment_method_entry.grid(row=2, column=7, sticky="w")
+        self.payment_method_label = tk.Label(self.third_line_frame, text="Payment Method")
+        self.payment_method_label.pack(side=tk.LEFT)
+        self.payment_method_entry = ttk.Combobox(self.third_line_frame, values=["Credit", "Debit", "Cash"])
+        self.payment_method_entry.pack(side=tk.LEFT)
 
-        # Booking Button connected to the database
+        # Place the Add Booking button below the last line
         add_booking_button = tk.Button(self.frame, text="Add Booking", command=self.add_booking_to_database)
-        add_booking_button.grid(row=3, column=0, columnspan=8, pady=10, sticky="e")
+        add_booking_button.pack(side=tk.RIGHT, padx=10, pady=5)
 
     def only_numbers(self, P):
-        # This method will restrict the entry to only accept numeric characters
-        return P.isdigit() or P == ""
+            # This method will restrict the entry to only accept numeric characters
+            return P.isdigit() or P == ""
 
     def add_booking_to_database(self):
-        # Collecting data from Entry widgets
-        room_number = self.room_number_entry.get()
-        reservation_date = self.reservation_date_entry.get()
-        first_name = self.first_name_entry.get()
-        last_name = self.last_name_entry.get()
-        checkin_date = self.checkin_date_entry.get()
-        checkout_date = self.checkout_date_entry.get()
-        number_of_guests = self.number_of_guests_entry.get()
-        special_requirements = self.special_requirements_entry.get()
-        email = self.email_entry.get()
-        phone_number = self.phone_number_entry.get()
-        payment_method = self.payment_method_entry.get()
+            # Collecting data from Entry widgets
+            room_number = self.room_number_entry.get()
+            reservation_date = self.reservation_date_entry.get()
+            first_name = self.first_name_entry.get()
+            last_name = self.last_name_entry.get()
+            checkin_date = self.checkin_date_entry.get()
+            checkout_date = self.checkout_date_entry.get()
+            number_of_guests = self.number_of_guests_entry.get()
+            special_requirements = self.special_requirements_entry.get()
+            email = self.email_entry.get()
+            phone_number = self.phone_number_entry.get()
+            payment_method = self.payment_method_entry.get()
 
-        # Connect to the database and insert data
-        try:
-            conn = sqlite3.connect('hotel_booking.db')
-            c = conn.cursor()
+            # Connect to the database and insert data
+            try:
+                conn = sqlite3.connect('hotel_booking.db')
+                c = conn.cursor()
 
-            insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
-                            checkin_date, checkout_date, number_of_guests, special_requirements, 
-                            email, phone_number, payment_method) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+                insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
+                                checkin_date, checkout_date, number_of_guests, special_requirements, 
+                                email, phone_number, payment_method) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
-            c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
-                                   checkin_date, checkout_date, number_of_guests, special_requirements,
-                                   email, phone_number, payment_method))
+                c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
+                                       checkin_date, checkout_date, number_of_guests, special_requirements,
+                                       email, phone_number, payment_method))
 
-            conn.commit()
-        except sqlite3.Error as e:
-            print(f"Database error: {e}")
-        except Exception as e:
-            print(f"Insertion error: {e}")
-        finally:
-            if conn:
-                conn.close()
+                conn.commit()
+            except sqlite3.Error as e:
+                print(f"Database error: {e}")
+            except Exception as e:
+                print(f"Insertion error: {e}")
+            finally:
+                if conn:
+                    conn.close()
 
-        # Assuming database operation is successful, now clear the fields and refresh the table
-        self.clear_entry_fields()
+            # Assuming database operation is successful, now clear the fields and refresh the table
+            self.clear_entry_fields()
 
-        # Refresh the information in the table if 'it' is an instance of InfoTable
-        if self.it:
-            self.it.refresh_table_view()
+            # Refresh the information in the table if 'it' is an instance of InfoTable
+            if self.it:
+                self.it.refresh_table_view()
 
     def clear_entry_fields(self):
         # Clear entry fields after booking is added
