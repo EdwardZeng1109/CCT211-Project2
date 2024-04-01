@@ -30,6 +30,16 @@ class ReservationBar:
         self.reservation_date_entry = DateEntry(self.first_line_frame)
         self.reservation_date_entry.pack(side=tk.LEFT)
 
+        first_name_label = tk.Label(self.first_line_frame, text="First Name")
+        first_name_label.pack(side=tk.LEFT)
+        self.first_name_entry = tk.Entry(self.first_line_frame, width=20)
+        self.first_name_entry.pack(side=tk.LEFT)
+
+        last_name_label = tk.Label(self.first_line_frame, text="Last Name")
+        last_name_label.pack(side=tk.LEFT)
+        self.last_name_entry = tk.Entry(self.first_line_frame, width=20)
+        self.last_name_entry.pack(side=tk.LEFT)
+
         # Create widgets in the second line
         self.checkin_date_label = tk.Label(self.second_line_frame, text="Checkin Date")
         self.checkin_date_label.pack(side=tk.LEFT)
@@ -55,6 +65,12 @@ class ReservationBar:
         notes_label.pack(side=tk.LEFT)
         self.notes_entry = tk.Entry(self.second_line_frame, width=30)
         self.notes_entry.pack(side=tk.LEFT)
+
+        # Add your special_requirements_entry widget here
+        special_requirements_label = tk.Label(self.second_line_frame, text="Special Requirements")
+        special_requirements_label.pack(side=tk.LEFT)
+        self.special_requirements_entry = tk.Entry(self.second_line_frame, width=30)
+        self.special_requirements_entry.pack(side=tk.LEFT)
 
         # Create widgets in the third line
         self.phone_number_label = tk.Label(self.third_line_frame, text="Phone Number")
@@ -89,6 +105,7 @@ class ReservationBar:
             email = self.email_entry.get()
             phone_number = self.phone_number_entry.get()
             payment_method = self.payment_method_entry.get()
+            notes = self.notes_entry.get()
 
             # Connect to the database and insert data
             try:
@@ -97,7 +114,7 @@ class ReservationBar:
 
                 insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
                                     checkin_date, checkout_date, number_of_guests, special_requirements, 
-                                    email, phone_number, payment_method, notes)  # Add 'notes' column
+                                    email, phone_number, payment_method, notes)  
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
                 c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
