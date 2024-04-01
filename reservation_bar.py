@@ -46,6 +46,16 @@ class ReservationBar:
         self.number_of_guests_entry = ttk.Combobox(self.second_line_frame, values=list(range(1, 11)))
         self.number_of_guests_entry.pack(side=tk.LEFT)
 
+        email_label = tk.Label(self.second_line_frame, text="Email")
+        email_label.pack(side=tk.LEFT)
+        self.email_entry = tk.Entry(self.second_line_frame, width=30)
+        self.email_entry.pack(side=tk.LEFT)
+
+        notes_label = tk.Label(self.second_line_frame, text="Notes")
+        notes_label.pack(side=tk.LEFT)
+        self.notes_entry = tk.Entry(self.second_line_frame, width=30)
+        self.notes_entry.pack(side=tk.LEFT)
+
         # Create widgets in the third line
         self.phone_number_label = tk.Label(self.third_line_frame, text="Phone Number")
         self.phone_number_label.pack(side=tk.LEFT)
@@ -86,13 +96,13 @@ class ReservationBar:
                 c = conn.cursor()
 
                 insert_sql = '''INSERT INTO reservations (room_number, reservation_date, first_name, last_name, 
-                                checkin_date, checkout_date, number_of_guests, special_requirements, 
-                                email, phone_number, payment_method) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+                                    checkin_date, checkout_date, number_of_guests, special_requirements, 
+                                    email, phone_number, payment_method, notes)  # Add 'notes' column
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
                 c.execute(insert_sql, (room_number, reservation_date, first_name, last_name,
                                        checkin_date, checkout_date, number_of_guests, special_requirements,
-                                       email, phone_number, payment_method))
+                                       email, phone_number, payment_method, notes))
 
                 conn.commit()
             except sqlite3.Error as e:
