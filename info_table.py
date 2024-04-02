@@ -5,6 +5,7 @@ import sqlite3
 
 class InfoTable:
     def __init__(self, master):
+        # Main Frame
         self.frame = tk.Frame(master)
         self.frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
@@ -12,7 +13,7 @@ class InfoTable:
         self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
         self.tree = ttk.Treeview(self.frame, yscrollcommand=self.tree_scroll.set, selectmode="browse")
-        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.tree.pack(side=tk.TOP, fill=tk.BOTH, expand=True) #Pack it on TOP for leaving space for Delete Button
         self.tree_scroll.config(command=self.tree.yview)
 
         #Create Columns
