@@ -49,6 +49,11 @@ class InfoTable:
 
         self.load_data_from_db()
 
+        self.delete_button = tk.Button(self.frame, text="Delete Selected", command=self.delete_selected_entry)
+        self.delete_button.pack(side=tk.BOTTOM, pady=5)
+
+    
+
     def load_data_from_db(self):
         """Load reservation data from the SQLite database and populate the Treeview."""
         try:
