@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkcalendar import DateEntry
-from datetime import datetime
+from datetime import datetime,date
 import sqlite3
 
 class ReservationBar:
@@ -40,14 +40,18 @@ class ReservationBar:
         self.create_label_with_necessary(self.first_line_frame, "Last Name")
         self.last_name_entry = tk.Entry(self.first_line_frame, width=20)
         self.last_name_entry.pack(side=tk.LEFT, padx=5, pady=5)
-
+       
         # Second line
+
+        # Date Calender Entry
+        today_date = date.today()
+        
         self.create_label_with_necessary(self.second_line_frame, "Checkin Date")
-        self.checkin_date_entry = DateEntry(self.second_line_frame)
+        self.checkin_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
         self.checkin_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.create_label_with_necessary(self.second_line_frame, "Checkout Date")
-        self.checkout_date_entry = DateEntry(self.second_line_frame)
+        self.checkout_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date
         self.checkout_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.create_label_with_necessary(self.second_line_frame, "Number of Guests")
