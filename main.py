@@ -8,7 +8,7 @@ def main():
     #log in system page
     root1 = tk.Tk()
     root1.title("Z Hotel Log in System")
-    root1.geometry('1200x600')
+    root1.geometry('200x200')
     login = Login(root1, on_login_success = loged_in)
     root1.mainloop()
 
