@@ -163,17 +163,22 @@ class ReservationBar:
                 self.it.refresh_table_view()
 
     def clear_entry_fields(self):
-        # Clear entry fields after booking is added
-        self.room_number_entry.delete(0, tk.END)
+        # Clear entry fields for regular Entry widgets
         self.first_name_entry.delete(0, tk.END)
         self.last_name_entry.delete(0, tk.END)
-        self.checkin_date_entry.delete(0, tk.END)
-        self.checkout_date_entry.delete(0, tk.END)
-        self.number_of_guests_entry.delete(0, tk.END)
-        self.special_requirements_entry.delete(0, tk.END)
         self.email_entry.delete(0, tk.END)
         self.phone_number_entry.delete(0, tk.END)
-        self.payment_method_entry.delete(0, tk.END)
+        self.special_requirements_entry.delete(0, tk.END)
+
+        # Reset Combobox selections to default
+        self.room_number_entry.set('')
+        self.number_of_guests_entry.set('')
+        self.payment_method_entry.set('')
+
+        # Reset DateEntry fields to today's date or another appropriate default date
+        today = datetime.now()
+        self.checkin_date_entry.set_date(today)
+        self.checkout_date_entry.set_date(today)
 
 
 
