@@ -49,6 +49,7 @@ class InfoTable:
 
         self.load_data_from_db()
 
+        # Add a delete Button
         self.delete_button = tk.Button(self.frame, text="Delete Selected", command=self.delete_selected_entry)
         self.delete_button.pack(side=tk.BOTTOM, pady=5)
 
@@ -96,9 +97,24 @@ class InfoTable:
             self.tree.insert("", 0, values=row) 
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = InfoTable(root)
-    root.title("Hotel Booking Information")
-    root.geometry("800x400")
-    root.mainloop()
+    #DELETE The INFORMATION From Database
+    def delete_selected_entry(self):
+        selected_item = self.tree.selection()  # Get selected item
+        if selected_item:  # Check if something is selected
+            room_number = self.tree.item(selected_item[0])['values'][0]  # Select a unique attribute. Since the Room Number is the first column, so it is 0;
+            confirm = tk.messagebox.askyesno("Confirm Delete", "Are you sure you want to delete it?")
+            if confirm:
+                try:
+                    conn = sqlite3.connect('hotel_booking.db')
+                    c = conn.cursor()
+                    # Execute delete operation (the row of room_number)
+                    c.execute('DELETE FROM reservations WHERE room_number = ?', (room_number,))
+                    conn.commit()
+                    self.tree.delete(selected_item[0])  # Delete
+                    print("Entry deleted successfully.")
+                except sqlite3.Error as e:
+                    print(f"Database error: {e}")
+                finally:
+                    if conn:
+                        conn.close()
+
