@@ -25,7 +25,7 @@ class Login:
     def check_login(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
-        if username == "admin" and password == "admin":
+        if username == "1" and password == "1":
             if self.on_login_success:
                 self.root.destroy() #Close the login window
                 self.on_login_success()
