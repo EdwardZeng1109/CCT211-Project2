@@ -13,7 +13,7 @@ class ReservationBar:
 
         # Title is on TOP
         self.title_label = tk.Label(self.frame, text="Hotel Reservation System",
-                            font=("Arial", 20, "bold"), fg="darkblue")
+                            font=("Courier New", 20, "bold"), fg="darkblue")
         self.title_label.pack(side=tk.TOP, padx=5, pady=5)
 
         # Use separate frames to organize the widgets in rows
