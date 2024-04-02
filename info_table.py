@@ -6,16 +6,35 @@ import sqlite3
 
 class InfoTable:
     def __init__(self, master):
-        # Main Frame
-        self.frame = tk.Frame(master)
-        self.frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        
+        # Main frame holding everything
+        self.main_frame = tk.Frame(master)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.tree_scroll = tk.Scrollbar(self.frame)
-        self.tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        # Frame for the Treeview and scrollbars
+        self.tree_frame = tk.Frame(self.main_frame)
+        self.tree_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
-        self.tree = ttk.Treeview(self.frame, yscrollcommand=self.tree_scroll.set, selectmode="browse")
-        self.tree.pack(side=tk.TOP, fill=tk.BOTH, expand=True) #Pack it on TOP for leaving space for Delete Button
-        self.tree_scroll.config(command=self.tree.yview)
+        # Frame for the delete button
+        self.button_frame = tk.Frame(self.main_frame)
+        self.button_frame.pack(fill=tk.X, side=tk.BOTTOM)
+
+        # Vertical scrollbar
+        self.tree_scroll_y = tk.Scrollbar(self.tree_frame, orient=tk.VERTICAL)
+        self.tree_scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Horizontal scrollbar
+        self.tree_scroll_x = tk.Scrollbar(self.tree_frame, orient=tk.HORIZONTAL)
+        self.tree_scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # Treeview widget
+        self.tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll_y.set, xscrollcommand=self.tree_scroll_x.set,
+                                 selectmode="browse")
+        self.tree.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        # Configuring the scrollbars
+        self.tree_scroll_y.config(command=self.tree.yview)
+        self.tree_scroll_x.config(command=self.tree.xview)
 
         #Create Columns
         self.tree['columns'] = ("Room Number", "Reservation Date", "First Name", "Last Name", "Checkin Date",
@@ -51,7 +70,7 @@ class InfoTable:
         self.load_data_from_db()
 
         # Add a delete Button
-        self.delete_button = tk.Button(self.frame, text="Delete Selected", command=self.delete_selected_entry)
+        self.delete_button = tk.Button(self.buttom_frame, text="Delete Selected", command=self.delete_selected_entry)
         self.delete_button.pack(side=tk.BOTTOM, pady=5)
 
     
