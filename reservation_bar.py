@@ -51,7 +51,7 @@ class ReservationBar:
         self.checkin_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.create_label_with_necessary(self.second_line_frame, "Checkout Date")
-        self.checkout_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date
+        self.checkout_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
         self.checkout_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.create_label_with_necessary(self.second_line_frame, "Number of Guests")
