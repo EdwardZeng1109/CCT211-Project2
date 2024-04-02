@@ -49,7 +49,7 @@ class InfoTable:
         self.tree.column("Checkin Date", anchor=tk.CENTER, width=120)
         self.tree.column("Checkout Date", anchor=tk.CENTER, width=120)
         self.tree.column("Number of Guests", anchor=tk.CENTER, width=60)
-        self.tree.column("Special Requirements", anchor=tk.W, width=120)
+        self.tree.column("Special Requirements", anchor=tk.W, width=160)
         self.tree.column("Email", anchor=tk.W, width=160)
         self.tree.column("Phone Number", anchor=tk.CENTER, width=120)
         self.tree.column("Payment Method", anchor=tk.CENTER, width=60)
