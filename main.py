@@ -6,7 +6,7 @@ from room_box import RoomBox
 def main():
     root = tk.Tk()
     root.title("Z Hotel Reservation System")
-    root.geometry('1200x600')
+    root.geometry('1300x600')
 
     reservation_bar = ReservationBar(root)
     information_table = InfoTable(root)
