@@ -84,7 +84,6 @@ class ReservationBar:
         # Call update_button_state
         # Combobox and DateEntry widgets use：ComboboxSelected
         self.room_number_entry.bind('<<ComboboxSelected>>', self.update_button_state)
-        self.reservation_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
         self.checkin_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
         self.checkout_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
         self.number_of_guests_entry.bind('<<ComboboxSelected>>', self.update_button_state)
