@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class App:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Login Page")
 
+class App:
+    def __init__(self, root, on_login_success):
+        self.root = root
+        self.on_login_success = on_login_success #check if user entered correct username and password
         tk.Label(self.root, text="Username:").pack()
         self.username_entry = tk.Entry(self.root)
         self.username_entry.pack()
@@ -19,19 +19,13 @@ class App:
     def check_login(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
-        if username == "admin" and password == "1":
-            self.open_new_window()
+        if username == "admin" and password == "admin":
+            if self.on_login_success:
+                self.root.destroy() #Close the login window
+                self.on_login_success()
         else:
             messagebox.showerror("Login Fail", "Username or Password wrong")
 
-    def open_new_window(self):
-        self.root.destroy()
-
-        new_window = tk.Tk()
-        new_window.title("Function Page")
-        tk.Label(new_window, text="To be implemented").pack()
-
-        new_window.mainloop()
 
 if __name__ == "__main__":
     root = tk.Tk()
