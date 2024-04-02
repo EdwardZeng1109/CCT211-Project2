@@ -45,7 +45,7 @@ class InfoTable:
         self.tree.heading("Special Requirements", text="Notes", anchor=tk.CENTER)
         self.tree.heading("Email", text="Email", anchor=tk.CENTER)
         self.tree.heading("Phone Number", text="Phone Number", anchor=tk.CENTER)
-        self.tree.heading("Payment Method", text="Payment Method", anchor=tk.CENTER)
+        self.tree.heading("Payment Method", text="Payment", anchor=tk.CENTER)
 
         self.load_data_from_db()
 
