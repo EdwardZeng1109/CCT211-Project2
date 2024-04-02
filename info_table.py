@@ -70,7 +70,7 @@ class InfoTable:
         self.load_data_from_db()
 
         # Add a delete Button
-        self.delete_button = tk.Button(self.buttom_frame, text="Delete Selected", command=self.delete_selected_entry)
+        self.delete_button = tk.Button(self.button_frame, text="Delete Selected", command=self.delete_selected_entry)
         self.delete_button.pack(side=tk.BOTTOM, pady=5)
 
     
