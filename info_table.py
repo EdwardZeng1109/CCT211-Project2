@@ -6,7 +6,7 @@ import sqlite3
 
 class InfoTable:
     def __init__(self, master):
-        
+
         # Main frame holding everything
         self.main_frame = tk.Frame(master)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
@@ -28,7 +28,8 @@ class InfoTable:
         self.tree_scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
 
         # Treeview widget
-        self.tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll_y.set, xscrollcommand=self.tree_scroll_x.set,
+        self.tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll_y.set,
+                                 xscrollcommand=self.tree_scroll_x.set,
                                  selectmode="browse")
         self.tree.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -36,12 +37,13 @@ class InfoTable:
         self.tree_scroll_y.config(command=self.tree.yview)
         self.tree_scroll_x.config(command=self.tree.xview)
 
-        #Create Columns
-        self.tree['columns'] = ("Room Number", "Reservation Date", "First Name", "Last Name", "Checkin Date",
+        # Create Columns
+        self.tree['columns'] = ("room_type", "Room Number", "Reservation Date", "First Name", "Last Name", "Checkin Date",
                                 "Checkout Date", "Number of Guests", "Special Requirements",
                                 "Email", "Phone Number", "Payment Method")
 
         self.tree.column("#0", width=0, stretch=tk.NO)
+        self.tree.column("room_type", anchor=tk.CENTER, width=120)
         self.tree.column("Room Number", anchor=tk.CENTER, width=60)
         self.tree.column("Reservation Date", anchor=tk.CENTER, width=120)
         self.tree.column("First Name", anchor=tk.CENTER, width=120)
@@ -55,6 +57,7 @@ class InfoTable:
         self.tree.column("Payment Method", anchor=tk.CENTER, width=60)
 
         self.tree.heading("#0", text="", anchor=tk.CENTER)
+        self.tree.heading("room_type", text="Room Type", anchor=tk.CENTER)
         self.tree.heading("Room Number", text="Room", anchor=tk.CENTER)
         self.tree.heading("Reservation Date", text="Reservation Date", anchor=tk.CENTER)
         self.tree.heading("First Name", text="First Name", anchor=tk.CENTER)
@@ -72,8 +75,6 @@ class InfoTable:
         # Add a delete Button
         self.delete_button = tk.Button(self.button_frame, text="Delete Selected", command=self.delete_selected_entry)
         self.delete_button.pack(side=tk.BOTTOM, pady=5)
-
-    
 
     def load_data_from_db(self):
         """Load reservation data from the SQLite database and populate the Treeview."""
@@ -98,7 +99,6 @@ class InfoTable:
             if conn:
                 conn.close()
 
-
     def refresh_table_view(self):
 
         # Clear existing entries in the table view.
@@ -109,19 +109,20 @@ class InfoTable:
         conn = sqlite3.connect('hotel_booking.db')
         c = conn.cursor()
         c.execute(
-            "SELECT room_number, reservation_date, first_name, last_name, checkin_date, checkout_date, number_of_guests, special_requirements, email, phone_number, payment_method FROM reservations")
+            "SELECT room_type, room_number, reservation_date, first_name, last_name, checkin_date, checkout_date, number_of_guests, special_requirements, email, phone_number, payment_method FROM reservations")
         rows = c.fetchall()
 
         # Repopulate the table view with the latest data.
         for row in rows:
-            self.tree.insert("", 0, values=row) 
+            self.tree.insert("", 0, values=row)
 
+            # DELETE The INFORMATION From Database
 
-    #DELETE The INFORMATION From Database
     def delete_selected_entry(self):
         selected_item = self.tree.selection()  # Get selected item
         if selected_item:  # Check if something is selected
-            room_number = self.tree.item(selected_item[0])['values'][0]  # Select a unique attribute. Since the Room Number is the first column, so it is 0;
+            room_number = self.tree.item(selected_item[0])['values'][
+                0]  # Select a unique attribute. Since the Room Number is the first column, so it is 0;
             confirm = tk.messagebox.askyesno("Confirm Delete", "Are you sure you want to delete it?")
             if confirm:
                 try:
@@ -137,4 +138,3 @@ class InfoTable:
                 finally:
                     if conn:
                         conn.close()
-
