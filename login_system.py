@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-class App:
+class Login:
     def __init__(self, root, on_login_success):
         self.root = root
         self.on_login_success = on_login_success #check if user entered correct username and password
@@ -29,5 +29,5 @@ class App:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = App(root)
+    app = Login(root)
     root.mainloop()
