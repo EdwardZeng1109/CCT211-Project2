@@ -9,18 +9,18 @@ def create_and_populate_db():
 
     # Create table with the correct order of columns as per your listing
     c.execute('''CREATE TABLE IF NOT EXISTS reservations
-                 (room_type TEXT,
-                 room_number INTEGER,
-                  reservation_date TEXT,
-                  first_name TEXT,
-                  last_name TEXT,
+                 (reservation_date TEXT,
                   checkin_date TEXT,
                   checkout_date TEXT,
+                  room_type TEXT,
+                  room_number INTEGER,
+                  first_name TEXT,
+                  last_name TEXT,
                   number_of_guests INTEGER,
-                  special_requirements TEXT,
                   email TEXT,
                   phone_number INTEGER,
-                  payment_method TEXT)''')
+                  payment_method TEXT,
+                  special_requirements TEXT)''')
 
     # Insert Data with the new order
     reservations = [
