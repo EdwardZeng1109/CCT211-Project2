@@ -124,9 +124,9 @@ class ReservationBar:
     def update_room_numbers(self, event):
         room_type = self.room_type_entry.get()
         if room_type == "Twin Room":
-            self.room_number_entry['values'] = ["101", "103", "105", "107"]
+            self.room_number_entry['values'] = ["101", "103", "105", "107", "109", "111", "113", "115", "117", "119", "121"]
         elif room_type == "Queen Room":
-            self.room_number_entry['values'] = ["102", "104", "106", "108"]
+            self.room_number_entry['values'] = ["102", "104", "106", "108", "110", "112", "116", "118", "120", "122"]
         elif room_type == "Premium Suit":
             self.room_number_entry['values'] = ["201", "202"]
         self.room_number_entry.set('')
