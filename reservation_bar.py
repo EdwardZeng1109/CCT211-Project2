@@ -4,7 +4,6 @@ from tkcalendar import DateEntry
 from datetime import datetime, date
 import sqlite3
 
-
 class ReservationBar:
     def __init__(self, master, it=None):
         self.it = it
@@ -28,6 +27,22 @@ class ReservationBar:
 
         # First line
 
+        # Store today's date in a variable
+        self.reservation_date = datetime.now().strftime("%Y-%m-%d")
+
+        # Date Calender Default Setting
+        today_date = date.today()
+
+        # Checkin Date
+        self.create_label_with_necessary(self.first_line_frame, "Checkin Date")
+        self.checkin_date_entry = DateEntry(self.first_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
+        self.checkin_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
+
+        # Checkout Date
+        self.create_label_with_necessary(self.first_line_frame, "Checkout Date")
+        self.checkout_date_entry = DateEntry(self.first_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
+        self.checkout_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
+
         # Room Type Options
         self.create_label_with_necessary(self.first_line_frame, "Room Type")
         self.room_type_entry = ttk.Combobox(self.first_line_frame, values=["Twin Room", "Queen Room", "Premium Suit"],
@@ -40,52 +55,44 @@ class ReservationBar:
         self.room_number_entry = ttk.Combobox(self.first_line_frame, width=10)
         self.room_number_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
-        # Store today's date in a variable
-        self.reservation_date = datetime.now().strftime("%Y-%m-%d")
-
-        self.create_label_with_necessary(self.first_line_frame, "First Name")
-        self.first_name_entry = tk.Entry(self.first_line_frame, width=20)
+        # Second line
+        # First Name
+        self.create_label_with_necessary(self.second_line_frame, "First Name")
+        self.first_name_entry = tk.Entry(self.second_line_frame, width=20)
         self.first_name_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.create_label_with_necessary(self.first_line_frame, "Last Name")
-        self.last_name_entry = tk.Entry(self.first_line_frame, width=20)
+        # Last Name
+        self.create_label_with_necessary(self.second_line_frame, "Last Name")
+        self.last_name_entry = tk.Entry(self.second_line_frame, width=20)
         self.last_name_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
-        # Second line
-        # Date Calender Entry
-        today_date = date.today()
-
-        self.create_label_with_necessary(self.second_line_frame, "Checkin Date")
-        self.checkin_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
-        self.checkin_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
-
-        self.create_label_with_necessary(self.second_line_frame, "Checkout Date")
-        self.checkout_date_entry = DateEntry(self.second_line_frame, date_pattern='yyyy-MM-dd', mindate=today_date)
-        self.checkout_date_entry.pack(side=tk.LEFT, padx=5, pady=5)
-
+        # Number of Guest
         self.create_label_with_necessary(self.second_line_frame, "Number of Guests")
         self.number_of_guests_entry = ttk.Combobox(self.second_line_frame, values=list(range(1, 6)), width=10)
         self.number_of_guests_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
+        # Email
         self.create_label_with_necessary(self.second_line_frame, "Email")
         self.email_entry = tk.Entry(self.second_line_frame, width=30)
         self.email_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Third line
-        # Special Requirements is not necessary
-        special_requirements_label = tk.Label(self.third_line_frame, text="Special Requirements")
-        special_requirements_label.pack(side=tk.LEFT)
-        self.special_requirements_entry = tk.Entry(self.third_line_frame, width=60)
-        self.special_requirements_entry.pack(side=tk.LEFT, padx=10, pady=5)
-
+        # Phone Number
         self.create_label_with_necessary(self.third_line_frame, "Phone Number")
         validate_phone_number = (master.register(self.validate_phone), '%P')
         self.phone_number_entry = tk.Entry(self.third_line_frame, validate="key", validatecommand=validate_phone_number)
         self.phone_number_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
+        # Payment Method
         self.create_label_with_necessary(self.third_line_frame, "Payment Method")
         self.payment_method_entry = ttk.Combobox(self.third_line_frame, values=["Credit", "Debit", "Cash"], width=10)
         self.payment_method_entry.pack(side=tk.LEFT, padx=5, pady=5)
+
+        # Special Requirements is not necessary
+        special_requirements_label = tk.Label(self.third_line_frame, text="Special Requirements")
+        special_requirements_label.pack(side=tk.LEFT)
+        self.special_requirements_entry = tk.Entry(self.third_line_frame, width=60)
+        self.special_requirements_entry.pack(side=tk.LEFT, padx=10, pady=5)
 
         # Add Booking Button: Initialize the state to Disabled
         self.add_booking_button = tk.Button(self.third_line_frame, text="Add Booking",
@@ -96,10 +103,10 @@ class ReservationBar:
 
         # Call update_button_state
         # Combobox and DateEntry widgets use：ComboboxSelected
-        self.room_type_entry.bind('<<ComboboxSelected>>', self.update_button_state, add="+")
-        self.room_number_entry.bind('<<ComboboxSelected>>', self.update_button_state)
         self.checkin_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
         self.checkout_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
+        self.room_type_entry.bind('<<ComboboxSelected>>', self.update_button_state, add="+")
+        self.room_number_entry.bind('<<ComboboxSelected>>', self.update_button_state)
         self.number_of_guests_entry.bind('<<ComboboxSelected>>', self.update_button_state)
         self.payment_method_entry.bind('<<ComboboxSelected>>', self.update_button_state)
 
@@ -113,9 +120,9 @@ class ReservationBar:
 
     def update_button_state(self, event=None):
         # Check if all fields are filled
-        if (self.room_type_entry.get() and self.room_number_entry.get() and
+        if (self.checkin_date_entry.get() and self.checkout_date_entry.get() and
+                self.room_type_entry.get() and self.room_number_entry.get() and
                 self.first_name_entry.get() and self.last_name_entry.get() and
-                self.checkin_date_entry.get() and self.checkout_date_entry.get() and
                 self.number_of_guests_entry.get() and self.email_entry.get() and
                 len(self.phone_number_entry.get()) == 10 and self.payment_method_entry.get()):
             self.add_booking_button['state'] = tk.NORMAL
@@ -144,32 +151,32 @@ class ReservationBar:
 
     def add_booking_to_database(self):
         # Collecting data from Entry widgets
-        room_type = self.room_type_entry.get()
-        room_number = self.room_number_entry.get()
         reservation_date = datetime.now().strftime("%Y-%m-%d")
-        first_name = self.first_name_entry.get()
-        last_name = self.last_name_entry.get()
         checkin_date = self.checkin_date_entry.get()
         checkout_date = self.checkout_date_entry.get()
+        room_type = self.room_type_entry.get()
+        room_number = self.room_number_entry.get()
+        first_name = self.first_name_entry.get()
+        last_name = self.last_name_entry.get()
         number_of_guests = self.number_of_guests_entry.get()
-        special_requirements = self.special_requirements_entry.get()
         email = self.email_entry.get()
         phone_number = self.phone_number_entry.get()
         payment_method = self.payment_method_entry.get()
+        special_requirements = self.special_requirements_entry.get()
 
         # Connect to the database and insert data
         try:
             conn = sqlite3.connect('hotel_booking.db')
             c = conn.cursor()
 
-            insert_sql = '''INSERT INTO reservations (room_type, room_number, reservation_date, first_name, last_name, 
-                                    checkin_date, checkout_date, number_of_guests, special_requirements, 
-                                    email, phone_number, payment_method)  
+            insert_sql = '''INSERT INTO reservations (reservation_date, checkin_date, checkout_date, room_type, 
+                                    room_number, first_name, last_name, number_of_guests, email, phone_number, 
+                                    payment_method, special_requirements)  
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
-            c.execute(insert_sql, (room_type,room_number, reservation_date, first_name, last_name,
-                                   checkin_date, checkout_date, number_of_guests, special_requirements,
-                                   email, phone_number, payment_method))
+            c.execute(insert_sql, (reservation_date, checkin_date, checkout_date, room_type,room_number,
+                                   first_name, last_name, number_of_guests, email, phone_number, payment_method,
+                                   special_requirements))
 
             conn.commit()
         except sqlite3.Error as e:
@@ -252,7 +259,4 @@ class Tooltip:
                          background="#ffffe0", relief=tk.SOLID, borderwidth=1,
                          wraplength=self.wraplength)
         label.pack(ipadx=10)
-
-
-
 
