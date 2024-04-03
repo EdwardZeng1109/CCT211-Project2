@@ -91,7 +91,8 @@ class ReservationBar:
         self.add_booking_button = tk.Button(self.third_line_frame, text="Add Booking",
                                             command=self.add_booking_to_database, state=tk.DISABLED)
         self.add_booking_button.pack(side=tk.RIGHT, padx=5)
-        Tooltip(self.add_booking_button, "Please fill in all necessary fields to enable this button")
+        Tooltip(self.add_booking_button, "Please fill in all *necessary fields; "
+                                         "Phone number should be 10 digits.")
 
         # Call update_button_state
         # Combobox and DateEntry widgets use：ComboboxSelected
@@ -209,10 +210,11 @@ class ReservationBar:
 # TOOLTIP WHEN MOUSE OVER THE BOOKING BUTTON
 class Tooltip:
     def __init__(self, widget, text='Widget info'):
-        self.waittime = 500  # Milliseconds
-        self.wraplength = 180  # Pixels
+        self.waittime = 100  # Milliseconds
+        self.wraplength = 130  # Pixels
         self.widget = widget
         self.text = text
+        self.tipwindow = None  # Initialize tipwindow here
         self.widget.bind("<Enter>", self.enter)
         self.widget.bind("<Leave>", self.close)
 
@@ -237,7 +239,7 @@ class Tooltip:
     def showtip(self, event=None):
         x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
-        x += self.widget.winfo_rootx() + 0
+        x += self.widget.winfo_rootx() - 30
         y += self.widget.winfo_rooty() + 20
 
         # Creates a toplevel window
@@ -250,5 +252,7 @@ class Tooltip:
                          background="#ffffe0", relief=tk.SOLID, borderwidth=1,
                          wraplength=self.wraplength)
         label.pack(ipadx=10)
+
+
 
 
