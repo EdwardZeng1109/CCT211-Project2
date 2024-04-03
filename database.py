@@ -36,7 +36,7 @@ def create_and_populate_db():
         ('Twin Room', 113, '2023-06-09', 'Michael', 'Campbell', '2023-06-10', '2023-06-25', 2, 'Early check-in if possible.', 'michaelcampbell@hfiw.com', 3783982002, 'credit'),
         ('Twin Room', 101, '2023-06-10', 'Taylor', 'Broewn', '2023-06-12', '2023-06-15', 3, 'Extra pillows.', 'talorbroewn98@fhska.com', 5673392095, 'credit'),
         ('Twin Room', 115, '2023-06-12', 'Quinn', 'Miller', '2023-06-15', '2023-06-18', 1, 'Late checkout if possible.', 'quinnmiller850@bdkm.com', 9068302112, 'credit'),
-        ('Queen Room', 118, '2023-09-05', 'Sean', 'Wang', '2023-09-08', '2023-09-15', 2, 'Celebrate for aniversary.', 'seanwang95@lsfy.com', 8059051005, 'debit'),
+        ('Premium Suit', 202, '2023-09-05', 'Sean', 'Wang', '2023-09-08', '2023-09-15', 2, 'Celebrate for aniversary.', 'seanwang95@lsfy.com', 8059051005, 'debit'),
         ('Queen Room', 116, '2023-06-22', 'Eden', 'Bae', '2023-06-23', '2023-06-27', 2, 'Extra bottles of water.', 'edenbae0905@zsww.com', 9057090101, 'debit'),
         ('Queen Room', 102, '2023-07-07', 'Avery', 'Martinez', '2023-07-10', '2023-07-12', 2, 'Extra towels.', 'averymartinez@dhiqfh.com', 587295895, 'credit')
     ]
