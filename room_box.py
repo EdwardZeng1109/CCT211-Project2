@@ -42,6 +42,7 @@ class RoomBox:
         self.room_labels = []
         self.room_rectangles = []
         self.reservations = {}
+        self.today = datetime.today().date()
         # Draw the initial room blocks
         self.update_room_boxes()
         self.root.after(1000, self.refresh_room_boxes)
@@ -57,8 +58,6 @@ class RoomBox:
 
         self.room_labels.clear()
         self.room_rectangles.clear()
-
-        today = datetime.today().date()
         self.reservations = get_room_reservations()
 
         # Determine the size of the canvas and calculate room sizes
@@ -76,10 +75,10 @@ class RoomBox:
             room_color = 'green'  # Default to available
             if room_number in self.reservations:
                 for room_type, checkin, checkout in self.reservations[room_number]:
-                    if today == checkin:
+                    if self.today == checkin:
                         room_color = 'red'  # Occupied today
-                    elif today < checkin:
-                        room_color = 'blue'  # Reserved in the future
+                    elif self.today < checkin:
+                        room_color = 'grey'  # Reserved in the future
             # Create rectangle and text for each room
             rectangle = self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=room_color, tags="room")
             label = self.canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2, text=f'Room {room_number}')
@@ -108,10 +107,12 @@ class RoomBox:
             # Pick the room type from the first reservation entry
             room_type = reservations[0][0]
             # Format the reserved dates as strings
-            dates_reserved = ", ".join([
-                f"{checkin.strftime('%Y-%m-%d')} to {checkout.strftime('%Y-%m-%d')}"
-                for _, checkin, checkout in reservations
-            ])
+            dates_reserved = ""
+            for type, checkin, checkout in reservations:
+                if self.today <= checkin: # Only show today or future date
+                    if dates_reserved:  # If the string is not empty, add a comma before adding more dates
+                        dates_reserved += ", "
+                    dates_reserved += f"{checkin.strftime('%Y-%m-%d')} to {checkout.strftime('%Y-%m-%d')}"
 
         # Display room info in a message box
         messagebox.showinfo(
