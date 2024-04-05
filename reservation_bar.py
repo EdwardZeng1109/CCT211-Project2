@@ -100,11 +100,13 @@ class ReservationBar:
         Tooltip(self.add_booking_button, "Please fill in all *necessary fields; "
                                          "Phone number should be 10 digits.")
 
+        self.refresh_available_rooms()
+        
         # Call update_button_state
         # Combobox and DateEntry widgets use：ComboboxSelected
-        self.checkin_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
+        self.checkin_date_entry.bind('<<DateEntrySelected>>', self.refresh_available_rooms)
         self.checkout_date_entry.bind('<<DateEntrySelected>>', self.update_button_state)
-        self.room_type_entry.bind('<<ComboboxSelected>>', self.update_button_state, add="+")
+        self.room_type_entry.bind('<<ComboboxSelected>>', self.update_room_numbers)
         self.room_number_entry.bind('<<ComboboxSelected>>', self.update_button_state)
         self.number_of_guests_entry.bind('<<ComboboxSelected>>', self.update_button_state)
         self.payment_method_entry.bind('<<ComboboxSelected>>', self.update_button_state)
@@ -128,16 +130,6 @@ class ReservationBar:
         else:
             self.add_booking_button['state'] = tk.DISABLED
 
-    def update_room_numbers(self, event):
-        room_type = self.room_type_entry.get()
-        if room_type == "Twin Room":
-            self.room_number_entry['values'] = ["101", "103", "105", "107", "109", "111", "113", "115", "117", "119", "121"]
-        elif room_type == "Queen Room":
-            self.room_number_entry['values'] = ["102", "104", "106", "108", "110", "112", "116", "118", "120", "122"]
-        elif room_type == "Premium Suit":
-            self.room_number_entry['values'] = ["201", "202"]
-        self.room_number_entry.set('')
-
     def validate_phone(self, input):
         # Allow clearing the input by checking if it's an empty string
         if input == "":
@@ -145,10 +137,63 @@ class ReservationBar:
         # Only accept numeric characters, and its length should be 10
         return input.isdigit() and len(input) <= 10
 
+    def update_room_numbers(self, event=None):
+        self.refresh_available_rooms()
+        selected_room_type = self.room_type_entry.get()
+        available_numbers = self.available_room_types_and_numbers.get(selected_room_type, [])
+        self.room_number_entry['values'] = available_numbers
+        self.room_number_entry.set('')
+
+    def schedule_room_refresh(self):
+        self.frame.after(1000, self.refresh_available_rooms)
+
+    def refresh_available_rooms(self, event=None):
+        checkin_date = self.checkin_date_entry.get() if self.checkin_date_entry.get() else datetime.now().strftime('%Y-%m-%d')
+
+        #get all the room types and room numbers from the database
+        self.all_room_types_and_numbers = {
+            101: "Twin Room", 102: "Queen Room", 103: "Twin Room", 104: "Queen Room",
+            105: "Twin Room", 106: "Queen Room", 107: "Twin Room", 108: "Queen Room",
+            109: "Twin Room", 201: "Twin Room", 202: "Premium Suit", 203: "Twin Room",
+            204: "Queen Room", 205: "Twin Room", 206: "Queen Room", 207: "Twin Room",
+            208: "Queen Room", 209: "Premium Suit", 301: "Twin Room", 302: "Premium Suit",
+            303: "Twin Room", 304: "Queen Room", 305: "Twin Room", 306: "Queen Room",
+            307: "Twin Room", 308: "Queen Room", 309: "Premium Suit"
+        }
+
+        #get rooms that are already booked
+        booked_rooms = self.fetch_booked_rooms_on_date(checkin_date)
+        booked_room_numbers = {info[1] for info in booked_rooms}
+        self.available_room_types_and_numbers = {}
+        #get rooms that are not booked
+        for room_number, room_type in self.all_room_types_and_numbers.items():
+            if room_number not in booked_room_numbers:
+                # 如果房间类型尚未添加到字典，先初始化一个空列表
+                if room_type not in self.available_room_types_and_numbers:
+                    self.available_room_types_and_numbers[room_type] = []
+                self.available_room_types_and_numbers[room_type].append(room_number)
+
+        #update the list
+        self.room_type_entry['values'] = list(self.available_room_types_and_numbers.keys())
+
     # ADD STAR SIGN
     def create_label_with_necessary(self, parent, text):
         label_with_necessary = tk.Label(parent, text="*" + text, fg="black")
         label_with_necessary.pack(side=tk.LEFT, padx=5)
+
+    def fetch_booked_rooms_on_date(self, checkin_date):
+        conn = None
+        try:
+            conn = sqlite3.connect('hotel_booking.db')
+            c = conn.cursor()
+            query = '''SELECT room_type, room_number FROM reservations WHERE checkin_date = ?'''
+            c.execute(query, (checkin_date,))
+            return c.fetchall()
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+        finally:
+            if conn:
+                conn.close()
 
     def add_booking_to_database(self):
         # create a unique id
