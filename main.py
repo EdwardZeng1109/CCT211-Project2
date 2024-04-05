@@ -24,5 +24,6 @@ def loged_in():
     room_preview = RoomBox(root)
     root.mainloop()
 
+
 if __name__ == "__main__":
     main()
