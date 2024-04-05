@@ -14,7 +14,7 @@ def main():
 
 def loged_in():
     root = tk.Tk()
-    root.title("Z Hotel Reservation System")
+    root.title("Z Hotel Reservation Management System")
     root.geometry('1200x600')
 
     reservation_bar = ReservationBar(root)
