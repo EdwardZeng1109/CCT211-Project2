@@ -11,7 +11,7 @@ class ReservationBar:
         self.frame.pack(fill=tk.X, padx=10, pady=5)
 
         # Title is on TOP
-        self.title_label = tk.Label(self.frame, text="Hotel Reservation System",
+        self.title_label = tk.Label(self.frame, text="Hotel Reservation Management System",
                             font=("Courier New", 20, "bold"), fg="#274b6c")
         self.title_label.pack(side=tk.TOP, padx=5, pady=5)
 
