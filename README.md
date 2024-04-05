@@ -15,5 +15,7 @@ Grey Box: The room is available today;
 Blue Box: The room is occupied today;
 Yellow Box: The room has a future booking.
 
+Click on the room box for more information
+
 
 Enjoy using our hotel reservation management system!
