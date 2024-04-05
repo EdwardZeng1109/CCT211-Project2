@@ -7,11 +7,11 @@ import sqlite3
 class InfoTable:
     def __init__(self, master):
 
-        # Main frame holding everything
+        # Main frame that contains everything
         self.main_frame = tk.Frame(master)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Frame for the Treeview and scrollbars
+        # Frame for the table and scrollbars
         self.tree_frame = tk.Frame(self.main_frame)
         self.tree_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
@@ -58,7 +58,7 @@ class InfoTable:
         self.tree.column("Special Requirements", anchor=tk.W, width=200)
 
         self.tree.heading("#0", text="", anchor=tk.CENTER)
-        self.tree.heading("Reservation ID", text="ID", anchor=tk.CENTER)
+        self.tree.heading("Reservation ID", text="#", anchor=tk.CENTER)
         self.tree.heading("Reservation Date", text="Reservation Date", anchor=tk.CENTER)
         self.tree.heading("Checkin Date", text="Checkin", anchor=tk.CENTER)
         self.tree.heading("Checkout Date", text="Checkout", anchor=tk.CENTER)
@@ -74,7 +74,7 @@ class InfoTable:
 
         self.load_data_from_db()
 
-        # Add a delete Button
+        # Add a delete Button, able to delete selected data row
         self.delete_button = tk.Button(self.button_frame, text="Delete Selected", command=self.delete_selected_entry)
         self.delete_button.pack(side=tk.BOTTOM, pady=5)
 
@@ -119,12 +119,14 @@ class InfoTable:
         for row in rows:
             self.tree.insert("", 0, values=row)
 
-            # DELETE The INFORMATION From Database
+
+
+    # DELETE THE INFORMATION FROM DATABASE
 
     def delete_selected_entry(self):
         selected_item = self.tree.selection()
         if selected_item:  # Check if something is selected
-            reservation_id = self.tree.item(selected_item[0])['values'][0]  # Select a unique attribute.
+            reservation_id = self.tree.item(selected_item[0])['values'][0]  # reservation_id is a unique attribute
             confirm = tk.messagebox.askyesno("Confirm Delete", "Are you sure you want to delete it?")
             if confirm:
                 try:
