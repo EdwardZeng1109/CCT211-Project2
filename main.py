@@ -16,7 +16,7 @@ def loged_in():
     #main system
     root = tk.Tk()
     root.title("Z Hotel Reservation Management System")
-    root.geometry('1200x700')
+    root.geometry('1300x700')
 
     reservation_bar = ReservationBar(root)
     information_table = InfoTable(root)
