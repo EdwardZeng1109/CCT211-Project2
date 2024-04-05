@@ -73,7 +73,7 @@ class ReservationBar:
 
         # Email
         self.create_label_with_necessary(self.second_line_frame, "Email")
-        self.email_entry = tk.Entry(self.second_line_frame, width=30)
+        self.email_entry = tk.Entry(self.second_line_frame, width=25)
         self.email_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Third line
@@ -91,13 +91,13 @@ class ReservationBar:
         # Special Requirements (is not necessary entry)
         special_requirements_label = tk.Label(self.third_line_frame, text="Special Requirements")
         special_requirements_label.pack(side=tk.LEFT)
-        self.special_requirements_entry = tk.Entry(self.third_line_frame, width=60)
+        self.special_requirements_entry = tk.Entry(self.third_line_frame, width=45)
         self.special_requirements_entry.pack(side=tk.LEFT, padx=10, pady=5)
 
         # Add Booking Button: Initialize the state to Disabled
         self.add_booking_button = tk.Button(self.third_line_frame, text="Add Booking",
                                             command=self.add_booking_to_database, state=tk.DISABLED)
-        self.add_booking_button.pack(side=tk.RIGHT, padx=5)
+        self.add_booking_button.pack(side=tk.RIGHT, padx=20)
         Tooltip(self.add_booking_button, "Please fill in all *necessary fields; "
                                          "Phone number should be 10 digits.")
 
