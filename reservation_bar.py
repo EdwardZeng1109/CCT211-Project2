@@ -11,9 +11,9 @@ class ReservationBar:
         self.frame.pack(fill=tk.X, padx=10, pady=5)
 
         # Title is on TOP
-        self.title_label = tk.Label(self.frame, text="Hotel Reservation Management System",
+        self.title_label = tk.Label(self.frame, text="Z Hotel Reservation Management System",
                             font=("Courier New", 20, "bold"), fg="#274b6c")
-        self.title_label.pack(side=tk.TOP, padx=5, pady=5)
+        self.title_label.pack(side=tk.TOP, padx=5, pady=10)
 
         # Use separate frames to organize the widgets in rows
         self.first_line_frame = tk.Frame(self.frame)
@@ -87,7 +87,7 @@ class ReservationBar:
         self.payment_method_entry = ttk.Combobox(self.third_line_frame, values=["Credit", "Debit", "Cash"], width=10)
         self.payment_method_entry.pack(side=tk.LEFT, padx=5, pady=5)
 
-        # Special Requirements is not necessary
+        # Special Requirements (is not necessary entry)
         special_requirements_label = tk.Label(self.third_line_frame, text="Special Requirements")
         special_requirements_label.pack(side=tk.LEFT)
         self.special_requirements_entry = tk.Entry(self.third_line_frame, width=60)
@@ -125,13 +125,12 @@ class ReservationBar:
                 self.room_type_entry.get() and self.room_number_entry.get() and
                 self.first_name_entry.get() and self.last_name_entry.get() and
                 self.number_of_guests_entry.get() and self.email_entry.get() and
-                len(self.phone_number_entry.get()) <= 10 and self.payment_method_entry.get()):
+                len(self.phone_number_entry.get()) == 10 and self.payment_method_entry.get()):
             self.add_booking_button['state'] = tk.NORMAL
         else:
             self.add_booking_button['state'] = tk.DISABLED
 
     def validate_phone(self, input):
-        # Allow clearing the input by checking if it's an empty string
         if input == "":
             return True
         # Only accept numeric characters, and its length should be 10
@@ -165,10 +164,11 @@ class ReservationBar:
         booked_rooms = self.fetch_booked_rooms_on_date(checkin_date)
         booked_room_numbers = {info[1] for info in booked_rooms}
         self.available_room_types_and_numbers = {}
+
         #get rooms that are not booked
         for room_number, room_type in self.all_room_types_and_numbers.items():
             if room_number not in booked_room_numbers:
-                # 如果房间类型尚未添加到字典，先初始化一个空列表
+                # If the room type has not yet been added to the dictionary, initialize an empty list first
                 if room_type not in self.available_room_types_and_numbers:
                     self.available_room_types_and_numbers[room_type] = []
                 self.available_room_types_and_numbers[room_type].append(room_number)
@@ -176,10 +176,12 @@ class ReservationBar:
         #update the list
         self.room_type_entry['values'] = list(self.available_room_types_and_numbers.keys())
 
+
     # ADD STAR SIGN
     def create_label_with_necessary(self, parent, text):
         label_with_necessary = tk.Label(parent, text="*" + text, fg="black")
         label_with_necessary.pack(side=tk.LEFT, padx=5)
+
 
     def fetch_booked_rooms_on_date(self, checkin_date):
         conn = None
@@ -252,13 +254,13 @@ class ReservationBar:
         self.phone_number_entry.delete(0, tk.END)
         self.special_requirements_entry.delete(0, tk.END)
 
-        # Reset Combobox selections to default
+        # Clear entry fields for ComboboxSelected
         self.room_type_entry.set('')
         self.room_number_entry.set('')
         self.number_of_guests_entry.set('')
         self.payment_method_entry.set('')
 
-        # Reset DateEntry fields to today's date or another appropriate default date
+        # Reset DateEntry fields to today's date
         today = datetime.now()
         self.checkin_date_entry.set_date(today)
         self.checkout_date_entry.set_date(today)
