@@ -26,8 +26,7 @@ class ReservationBar:
         self.third_line_frame.pack(fill=tk.X)
 
         # First line
-
-        # Store today's date in a variable
+        # Store today's date
         self.reservation_date = datetime.now().strftime("%Y-%m-%d")
 
         # Date Calender Default Setting
@@ -124,7 +123,7 @@ class ReservationBar:
                 self.room_type_entry.get() and self.room_number_entry.get() and
                 self.first_name_entry.get() and self.last_name_entry.get() and
                 self.number_of_guests_entry.get() and self.email_entry.get() and
-                len(self.phone_number_entry.get()) == 10 and self.payment_method_entry.get()):
+                len(self.phone_number_entry.get()) <= 10 and self.payment_method_entry.get()):
             self.add_booking_button['state'] = tk.NORMAL
         else:
             self.add_booking_button['state'] = tk.DISABLED
@@ -139,10 +138,12 @@ class ReservationBar:
             self.room_number_entry['values'] = ["201", "202"]
         self.room_number_entry.set('')
 
-
-    def validate_phone(self, input):  # only accept numeric characters, and its length should be 10
+    def validate_phone(self, input):
+        # Allow clearing the input by checking if it's an empty string
+        if input == "":
+            return True
+        # Only accept numeric characters, and its length should be 10
         return input.isdigit() and len(input) <= 10
-
 
     # ADD STAR SIGN
     def create_label_with_necessary(self, parent, text):
@@ -150,6 +151,10 @@ class ReservationBar:
         label_with_necessary.pack(side=tk.LEFT, padx=5)
 
     def add_booking_to_database(self):
+        # create a unique id
+        timestamp = int(datetime.now().timestamp())
+        reservation_id = f"24{timestamp}"
+
         # Collecting data from Entry widgets
         reservation_date = datetime.now().strftime("%Y-%m-%d")
         checkin_date = self.checkin_date_entry.get()
@@ -169,14 +174,14 @@ class ReservationBar:
             conn = sqlite3.connect('hotel_booking.db')
             c = conn.cursor()
 
-            insert_sql = '''INSERT INTO reservations (reservation_date, checkin_date, checkout_date, room_type, 
+            insert_sql = '''INSERT INTO reservations (reservation_id, reservation_date, checkin_date, checkout_date, room_type, 
                                     room_number, first_name, last_name, number_of_guests, email, phone_number, 
                                     payment_method, special_requirements)  
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
-            c.execute(insert_sql, (reservation_date, checkin_date, checkout_date, room_type,room_number,
-                                   first_name, last_name, number_of_guests, email, phone_number, payment_method,
-                                   special_requirements))
+            c.execute(insert_sql, (reservation_id, reservation_date, checkin_date, checkout_date, room_type,
+                                   room_number, first_name, last_name, number_of_guests, email, phone_number,
+                                   payment_method, special_requirements))
 
             conn.commit()
         except sqlite3.Error as e:
