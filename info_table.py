@@ -38,15 +38,16 @@ class InfoTable:
         self.tree_scroll_x.config(command=self.tree.xview)
 
         # Create Columns
-        self.tree['columns'] = ("Reservation Date", "Checkin Date", "Checkout Date", "room_type", "Room Number",
+        self.tree['columns'] = ("Reservation ID","Reservation Date", "Checkin Date", "Checkout Date", "Room Type", "Room Number",
                                 "First Name", "Last Name", "Number of Guests", "Email", "Phone Number",
                                 "Payment Method", "Special Requirements")
 
         self.tree.column("#0", width=0, stretch=tk.NO)
+        self.tree.column("Reservation ID", anchor=tk.W, width=10)
         self.tree.column("Reservation Date", anchor=tk.CENTER, width=120)
         self.tree.column("Checkin Date", anchor=tk.CENTER, width=120)
         self.tree.column("Checkout Date", anchor=tk.CENTER, width=120)
-        self.tree.column("room_type", anchor=tk.CENTER, width=120)
+        self.tree.column("Room Type", anchor=tk.CENTER, width=120)
         self.tree.column("Room Number", anchor=tk.CENTER, width=60)
         self.tree.column("First Name", anchor=tk.CENTER, width=120)
         self.tree.column("Last Name", anchor=tk.CENTER, width=120)
@@ -57,10 +58,11 @@ class InfoTable:
         self.tree.column("Special Requirements", anchor=tk.W, width=200)
 
         self.tree.heading("#0", text="", anchor=tk.CENTER)
+        self.tree.heading("Reservation ID", text="ID", anchor=tk.CENTER)
         self.tree.heading("Reservation Date", text="Reservation Date", anchor=tk.CENTER)
         self.tree.heading("Checkin Date", text="Checkin", anchor=tk.CENTER)
         self.tree.heading("Checkout Date", text="Checkout", anchor=tk.CENTER)
-        self.tree.heading("room_type", text="Room Type", anchor=tk.CENTER)
+        self.tree.heading("Room Type", text="Room Type", anchor=tk.CENTER)
         self.tree.heading("Room Number", text="Room", anchor=tk.CENTER)
         self.tree.heading("First Name", text="First Name", anchor=tk.CENTER)
         self.tree.heading("Last Name", text="Last Name", anchor=tk.CENTER)
@@ -109,7 +111,7 @@ class InfoTable:
         conn = sqlite3.connect('hotel_booking.db')
         c = conn.cursor()
         c.execute(
-            "SELECT reservation_date, checkin_date, checkout_date, room_type, room_number, first_name, last_name, "
+            "SELECT reservation_id, reservation_date, checkin_date, checkout_date, room_type, room_number, first_name, last_name, "
             "number_of_guests, email, phone_number, payment_method, special_requirements FROM reservations")
         rows = c.fetchall()
 
@@ -120,17 +122,16 @@ class InfoTable:
             # DELETE The INFORMATION From Database
 
     def delete_selected_entry(self):
-        selected_item = self.tree.selection()  # Get selected item
+        selected_item = self.tree.selection()
         if selected_item:  # Check if something is selected
-            room_number = self.tree.item(selected_item[0])['values'][
-                0]  # Select a unique attribute. Since the Room Number is the first column, so it is 0;
+            reservation_id = self.tree.item(selected_item[0])['values'][0]  # Select a unique attribute.
             confirm = tk.messagebox.askyesno("Confirm Delete", "Are you sure you want to delete it?")
             if confirm:
                 try:
                     conn = sqlite3.connect('hotel_booking.db')
                     c = conn.cursor()
                     # Execute delete operation (the row of room_number)
-                    c.execute('DELETE FROM reservations WHERE room_number = ?', (room_number,))
+                    c.execute('DELETE FROM reservations WHERE reservation_id = ?', (reservation_id,))
                     conn.commit()
                     self.tree.delete(selected_item[0])  # Delete
                     print("Entry deleted successfully.")
