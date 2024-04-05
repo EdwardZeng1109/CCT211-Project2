@@ -6,7 +6,7 @@ class Login:
     def __init__(self, root, on_login_success):
         self.root = root
 
-        self.title_label = tk.Label(self.root, text="Z Hotel Reservation System",
+        self.title_label = tk.Label(self.root, text="Z Hotel Reservation Management System",
                                     font=("Courier New", 15, "bold"), fg="#274b6c")
         self.title_label.pack(side=tk.TOP, padx=10, pady=15)
 
